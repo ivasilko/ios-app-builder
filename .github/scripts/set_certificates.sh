@@ -2,7 +2,7 @@
 set -eo pipefail
 
 PROFILE=app.mobileprovision
-CERTIFICATE=Certificates.p12
+CERTIFICATE=app.p12
 
 gpg --quiet --batch --yes --decrypt --passphrase="$DECRYPTION_PASS" --output ./.github/certs/$PROFILE ./.github/certs/${PROFILE}.gpg
 gpg --quiet --batch --yes --decrypt --passphrase="$DECRYPTION_PASS" --output ./.github/certs/$CERTIFICATE ./.github/certs/${CERTIFICATE}.gpg
