@@ -12,38 +12,38 @@ platform :ios do
   desc "Your App descriptin"
 	lane :prod do
 		disable_automatic_code_signing(
-          path: "YourProject.xcodeproj",
-          team_id: "your team id",
+			  path: "YourProject.xcodeproj",
+			  team_id: "your team id",
 		)
 		update_app_identifier(
-          xcodeproj: "YourProject.xcodeproj",
-          plist_path: "path to Info.plist",
-          app_identifier: "your app identifier"
+			  xcodeproj: "YourProject.xcodeproj",
+			  plist_path: "path to Info.plist",
+			  app_identifier: "your app identifier"
 		)
 		update_project_provisioning(
-          xcodeproj: "YourProject.xcodeproj",
-          profile: "./.github/certs/app.mobileprovision",
-          code_signing_identity: "Your code signing identity",
-          build_configuration: "Release",
-          code_signing_identity: "iPhone Distribution"
-    )
+			  xcodeproj: "YourProject.xcodeproj",
+			  profile: "./.github/certs/app.mobileprovision",
+			  code_signing_identity: "Your code signing identity",
+			  build_configuration: "Release",
+			  code_signing_identity: "iPhone Distribution"
+	        )
  		build_ios_app(
-          workspace: "YourProject.xcworkspace",
-          configuration: "Release",
-          scheme: "your app scheme",
-          clean: true,
-          output_name: "app.ipa",
-          export_method: "app-store",
-          export_xcargs: "-allowProvisioningUpdates",
-          export_options: {
-            compileBitcode: true
-          }
+			  workspace: "YourProject.xcworkspace",
+			  configuration: "Release",
+			  scheme: "your app scheme",
+			  clean: true,
+			  output_name: "app.ipa",
+			  export_method: "app-store",
+			  export_xcargs: "-allowProvisioningUpdates",
+			  export_options: {
+			    compileBitcode: true
+			  }
  		)
 		upload_to_testflight(
-          username: "#{APPLE_USERNAME}",
-          apple_id: "your Apple ID",
-          skip_submission: true,
-          skip_waiting_for_build_processing: true
+			  username: "#{APPLE_USERNAME}",
+			  apple_id: "your Apple ID",
+			  skip_submission: true,
+			  skip_waiting_for_build_processing: true
 		)
 	end
 end
