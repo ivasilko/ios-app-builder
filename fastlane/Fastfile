@@ -27,6 +27,12 @@ platform :ios do
 			  build_configuration: "Release",
 			  code_signing_identity: "iPhone Distribution"
 	        )
+		increment_version_number(
+  			version_number: "#{VERSION_NUMBER}"
+		)
+		increment_build_number(
+  			build_number: "#{BUILD_NUMBER}"
+		)
  		build_ios_app(
 			  workspace: "YourProject.xcworkspace",
 			  configuration: "Release",
