@@ -1,0 +1,59 @@
+name: Build and upload to TestFlight
+on:
+  workflow_dispatch:
+    inputs:
+      version_number:
+        description: 'App version'
+        required: true
+        default: '0.0.0'
+      build_number:
+        description: 'Build version'
+        required: true
+        default: '0.0.0'
+jobs:
+  upload:
+    name: Build and upload to TestFlight
+    runs-on: macos-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v1
+        with:
+          ref: ${{ github.ref }}  
+      - name: Cache pods
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-pods
+        with:
+          path: ~/.cocoapods/repos
+          key: base-cocopods-repo
+          restore-keys: base-cocopods-repo
+      - name: Set up environment
+        env:
+          DECRYPTION_PASS: '${{ secrets.DECRYPTION_PASS }}'
+          KEYCHAIN_EXPORT: '${{ secrets.KEYCHAIN_EXPORT }}'
+        run: |
+          # add secret files into the project
+          echo '${{ secrets.LIApiKeys }}' > LifteeDriver/Constants/LIApiKeys.swift
+          echo '${{ secrets.GoogleServiceInfo }}' > LifteeDriver/GoogleService-Info.plist
+          
+          # select a specific XCode version
+          sudo xcode-select -switch /Applications/Xcode_12.3.app
+          
+          # install project dependencies
+          pod install
+          
+          # add a distribution certificate to the keychain
+          chmod +x ./.github/scripts/set_certificates.sh && ./.github/scripts/set_certificates.sh
+      - name: Run fastlane
+        env:
+          VERSION_NUMBER: ${{ github.event.inputs.version_number }}
+          BUILD_NUMBER: ${{ github.event.inputs.build_number }}
+          APPLE_SPECIAL_PASS: '${{ secrets.APPLE_SPECIAL_PASS }}'
+          APPLE_USERNAME: '${{ secrets.APPLE_USERNAME }}'
+        run: |
+          # set up version and build numbers in the project
+          agvtool new-marketing-version $VERSION_NUMBER
+          agvtool new-version -all $BUILD_NUMBER
+          
+          # build and upload to Apple Store Connect (caffeinate is used to prevent the mac from falling asleep)
+          caffeinate fastlane prod
