@@ -27,7 +27,8 @@ jobs:
           restore-keys: base-cocopods-repo
       - name: Set up environment
         env:
-          DECRYPTION_PASS: '${{ secrets.DECRYPTION_PASS }}'
+          DECRYPTION_PASS_CERTIFICATE: '${{ secrets.DECRYPTION_PASS_CERTIFICATE }}'
+          DECRYPTION_PASS_PROFILE: '${{ secrets.DECRYPTION_PASS_PROFILE }}'
           KEYCHAIN_EXPORT: '${{ secrets.KEYCHAIN_EXPORT }}'
         run: |
           # select a specific XCode version
@@ -40,7 +41,7 @@ jobs:
           ./.github/scripts/set_certificates.sh
       - name: Run fastlane
         env:
-          APPLE_SPECIAL_PASS: '${{ secrets.APPLE_SPECIAL_PASS }}'
+          APP_SPECIFIC_PASS: '${{ secrets.APP_SPECIFIC_PASS }}'
           APPLE_USERNAME: '${{ secrets.APPLE_USERNAME }}'
         run: |
           
