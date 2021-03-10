@@ -3,7 +3,6 @@ default_platform(:ios)
 VERSION_NUMBER = ENV['VERSION_NUMBER']
 BUILD_NUMBER = ENV['BUILD_NUMBER']
 APPLE_SPECIAL_PASS = ENV['APP_SPECIFIC_PASS']
-APPLE_USERNAME = ENV['APPLE_USERNAME']
 
 platform :ios do
   before_all do
@@ -46,7 +45,7 @@ platform :ios do
 			  }
  		)
 		upload_to_testflight(
-			  username: "#{APPLE_USERNAME}",
+			  username: "your Apple username",
 			  apple_id: "your Apple ID",
 			  skip_submission: true,
 			  skip_waiting_for_build_processing: true
