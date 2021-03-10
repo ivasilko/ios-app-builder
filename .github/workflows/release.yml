@@ -42,7 +42,6 @@ jobs:
       - name: Run fastlane
         env:
           APP_SPECIFIC_PASS: '${{ secrets.APP_SPECIFIC_PASS }}'
-          APPLE_USERNAME: '${{ secrets.APPLE_USERNAME }}'
         run: |
           
           # build and upload to Apple Store Connect (caffeinate is used to prevent the mac from falling asleep)
